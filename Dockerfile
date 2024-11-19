@@ -2,11 +2,12 @@ FROM python:3.11
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock /app/
-RUN pip install poetry && poetry install --no-root --no-dev
+COPY . /app/
 
-COPY . /app
+RUN pip install poetry && poetry install --no-root --no-dev
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+WORKDIR /app/app
+
+CMD ["poetry", "run", "fastapi", "run", "main.py", "--port", "8000"]
